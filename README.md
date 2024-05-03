@@ -15,7 +15,8 @@
 
 *Daha fazla bilgi için üstteki resmi dökümandan bilgi alabilirsiniz.
 
-
+* önemli not NYM dosyanız hangi klasörde ise o klasörün içinde işlemleri yapmanız gerekmektedir. Benim dosyalarım ROOT da olduğu için direk orada işlemleri gerçekleştirdim.
+![4](https://github.com/dymensionxyz/networks/assets/85512132/80e2b118-c31e-4ff0-8ed7-aa64cb29041e)
 
 
 1. Öncelikle scripti indirelim.
