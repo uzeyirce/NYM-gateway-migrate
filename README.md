@@ -18,7 +18,6 @@
 
 
 
-
 1. Öncelikle scripti indirelim.
 
 ```bash
@@ -35,6 +34,7 @@ sudo systemctl status gateway
 
 ![2](https://github.com/uzeyirce/Nimble/assets/85512132/15fdd084-4d15-47eb-ae28-2f9324c309ab)
 
+CTRL C ile durduralım.
 
 3. Servisi durduralım.
 
@@ -49,6 +49,7 @@ sudo systemctl stop gateway
 ```bash
 wget https://github.com/nymtech/nym/releases/download/nym-binaries-v2024.3-eclipse/nym-node
 ```
+![3](https://github.com/dymensionxyz/networks/assets/85512132/ddb15137-a941-4a05-ba1f-10b0ec73e8cb)
 
 5. Erişim izni verelim.
 
@@ -56,26 +57,129 @@ wget https://github.com/nymtech/nym/releases/download/nym-binaries-v2024.3-eclip
 chmod +x nym-node
 ```
 
+6. Configfile dosyasını migrate yapalım. GATEWAY-ID kısmına kendi ID nizi yazın.
+örnek: ./nym-node migrate --config-file ~/.nym/mixnode/uzo/config/config.toml mixnode
+
+```bash
+./nym-node migrate --config-file ~/.nym/gateways/<GATEWAY_ID>/config/config.toml gateway
+```
+
+7.nym-node service dosyasını açalım.
+
+```bash
+nano /etc/systemd/system/nym-node.service
+```
+İçine aşağıdaki bilgileri kopyalayalım. <GATEWAY_ID> değiştirmeyi unutmayalım.
 
 
 ```bash
-curl
-```
+[Unit]
+Description=Nym Node
+StartLimitInterval=350
+StartLimitBurst=10
 
+[Service]
+User=root
+LimitNOFILE=65536
+ExecStart=/root/nym-node run --mode exit-gateway --id <GATEWAY_ID> --deny-init
+KillSignal=SIGINT
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+```
+CTRL X ile çıkalım. 
+Y dedikten sonra Enter tuşu ile kaydedelim.
+
+
+8. Servis kontrolllerini yapalım sırasıyla.
+
+```bash
+./network_tunnel_manager.sh check_nymtun_iptables
+```
 
 
 ```bash
-curl
+./network_tunnel_manager.sh fetch_and_display_ipv6
 ```
 
+```bash
+./network_tunnel_manager.sh apply_iptables_rules
+```
+
+```bash
+./network_tunnel_manager.sh fetch_and_display_ipv6
+```
+
+```bash
+systemctl enable nym-node.service
+```
+
+```bash
+systemctl daemon-reload
+```
 
 
 ```bash
-curl
+service nym-node start && journalctl -u nym-node -f -n 100
 ```
 
+CTRL x
 
 
+bütün değerler valid olmalı
 ```bash
-curl
+ip addr show nymtun0
 ```
+
+
+Komut sonrası iki şaka vermeli.
+```bash
+./network_tunnel_manager.sh joke_through_the_mixnet
+```
+
+ID key ve Spnix Key bilgilerini alalım.
+```bash
+./nym-node bonding-information --id <GATEWAY ID>
+```
+
+
+NYM WALLETTA GİDİP VERSİON 1.1.0 yazıyoruz ve imzalıyoruz. 
+
+BİTTİ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
