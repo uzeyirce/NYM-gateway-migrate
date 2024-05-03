@@ -126,7 +126,6 @@ systemctl daemon-reload
 service nym-node start && journalctl -u nym-node -f -n 100
 ```
 
-CTRL x
 
 
 bütün değerler valid olmalı
